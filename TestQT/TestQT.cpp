@@ -3,6 +3,8 @@
 #endif
 
 #include "TestQT.h"
+#include "itemdelegate.h"
+#include "itemdef.h"
 
 #include <QFileDialog>
 #include <QColorDialog>
@@ -20,7 +22,7 @@
 #include <QCommandLinkButton>
 #include <QDialogButtonBox>
 #include <QGridLayout>
-
+#include <QSortFilterProxyModel>
 
 
 TestQT::TestQT(QWidget* parent)
@@ -455,4 +457,151 @@ TestQT::TestQT(QWidget* parent)
 			setLayout(layout);
 		}
 	}
+
+	{
+		// QListView
+		if (false)
+		{
+			initData();
+			updateButtonNum();
+
+			delegate = new ItemDelegate(this);
+			filterButtonGroup = new QButtonGroup(this);
+
+			// 设置互斥
+			filterButtonGroup->setExclusive(true);
+
+			filterButtonGroup->addButton(ui.allBtn);
+			filterButtonGroup->addButton(ui.redBtn);
+			filterButtonGroup->addButton(ui.blueBtn);
+			filterButtonGroup->addButton(ui.yellowBtn);
+
+			connect(filterButtonGroup, static_cast<void(QButtonGroup::*)(QAbstractButton*)>(&QButtonGroup::buttonClicked), this, [](QAbstractButton* button)
+				{
+					qDebug() << button->text();
+				});
+
+			ui.listView->setItemDelegate(delegate);       //为视图设置委托
+			ui.listView->setSpacing(15);                  //为视图设置控件间距
+			proxyModel = new QSortFilterProxyModel(ui.listView);
+			proxyModel->setSourceModel(model);
+			proxyModel->setFilterRole(Qt::UserRole);
+			proxyModel->setDynamicSortFilter(true);
+			ui.listView->setModel(proxyModel);                  //为委托设置模型
+			ui.listView->setViewMode(QListView::IconMode); //设置Item图标显示
+			ui.listView->setDragEnabled(false);            //控件不允许拖动
+
+			connect(ui.allBtn, &QPushButton::clicked, this, [&]()
+				{
+					if (proxyModel)
+					{
+						proxyModel->setFilterFixedString(QString());
+					}
+				});
+			connect(ui.redBtn, &QPushButton::clicked, this, [&]()
+				{
+					if (proxyModel)
+					{
+						proxyModel->setFilterFixedString(QString::number(S_RED));
+					}
+				});
+			connect(ui.blueBtn, &QPushButton::clicked, this, [&]()
+				{
+					if (proxyModel)
+					{
+						proxyModel->setFilterFixedString(QString::number(S_BLUE));
+					}
+				});
+			connect(ui.yellowBtn, &QPushButton::clicked, this, [&]()
+				{
+					if (proxyModel)
+					{
+						proxyModel->setFilterFixedString(QString::number(S_YELLOW));
+					}
+				});
+			connect(ui.setRedBtn, &QPushButton::clicked, this, [&]()
+				{
+					QModelIndexList modelIndexList = ui.listView->selectionModel()->selectedIndexes();
+					QModelIndexList sourceIndexList;
+					foreach(QModelIndex modelIndex, modelIndexList)
+					{
+						sourceIndexList << proxyModel->mapToSource(modelIndex); //获取源model的modelIndex
+					}
+
+					foreach(QModelIndex sourceIndex, sourceIndexList)
+					{
+						ItemStatus status = (ItemStatus)(sourceIndex.data(Qt::UserRole).toInt());
+						qDebug() << "Index : " << sourceIndex.row();
+
+						switch (status) {
+						case S_RED:
+							redNum--;
+							break;
+						case S_BLUE:
+							blueNum--;
+							break;
+						case S_YELLOW:
+							yellowNum--;
+							break;
+						}
+
+						status = S_RED;
+						redNum++;
+
+						model->setData(sourceIndex, status, Qt::UserRole);
+					}
+					this->updateButtonNum();
+				});
+		}
+	}
+}
+
+void TestQT::initData()
+{
+	totalNum = 50;
+	redNum = 0;
+	blueNum = 0;
+	yellowNum = 0;
+
+	model = new QStandardItemModel();
+
+	for (int i = 0; i < totalNum; ++i)
+	{
+		QStandardItem* Item = new QStandardItem;
+
+		ItemData itemData;
+
+		itemData.name = QString("Name %1").arg(i);
+		itemData.tel = QString("TEL:1331234567%1").arg(i);
+		int randNum = rand() % 3;
+		ItemStatus itemStatus;
+
+		switch (randNum)
+		{
+		case 0:
+			itemStatus = S_RED;
+			redNum++;
+			break;
+		case 1:
+			itemStatus = S_BLUE;
+			blueNum++;
+			break;
+		case 2:
+			itemStatus = S_YELLOW;
+			yellowNum++;
+			break;
+		}
+		Item->setData(itemStatus, Qt::UserRole);  // 单一存取
+		Item->setData(QVariant::fromValue(itemData), Qt::UserRole + 1);//整体存取
+
+		model->appendRow(Item);      //追加Item
+	}
+}
+
+void TestQT::updateButtonNum()
+{
+	ui.allBtn->setText(tr("all %1").arg(totalNum));
+	ui.redBtn->setText(tr("red %1").arg(redNum));
+	ui.blueBtn->setText(tr("blue %1").arg(blueNum));
+	ui.yellowBtn->setText(tr("yellow %1").arg(yellowNum));
 }

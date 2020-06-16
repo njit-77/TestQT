@@ -37,6 +37,152 @@
      <string>PushButton</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="allBtn">
+    <property name="geometry">
+     <rect>
+      <x>292</x>
+      <y>22</y>
+      <width>80</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#allBtn{
+background:white;
+border:1px solid gray;
+border-radius:5px;
+padding:2px 4px;
+color:gray;
+}
+
+QPushButton#allBtn:checked{
+background:gray;
+color:white;
+}</string>
+    </property>
+    <property name="text">
+     <string>all</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="redBtn">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>22</y>
+      <width>80</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#redBtn{
+background:white;
+border:1px solid rgb(255, 84, 92);
+border-radius:5px;
+padding:2px 4px;
+color:rgb(255, 84, 92);
+}
+
+QPushButton#redBtn:checked{
+background:rgb(255, 84, 92);
+color:white;
+}</string>
+    </property>
+    <property name="text">
+     <string>red</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="blueBtn">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>22</y>
+      <width>80</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#blueBtn{
+background:white;
+border:1px solid #3288E8;
+border-radius:5px;
+padding:2px 4px;
+color:#3288E8;
+}
+
+QPushButton#blueBtn:checked{
+background:#3288E8;
+color:white;
+}</string>
+    </property>
+    <property name="text">
+     <string>blue</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="yellowBtn">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>22</y>
+      <width>80</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#yellowBtn{
+background:white;
+border:1px solid rgb(255, 226, 6);
+border-radius:5px;
+padding:2px 4px;
+color:rgb(255, 226, 6);
+}
+
+QPushButton#yellowBtn:checked{
+background:rgb(255, 226, 6);
+color:white;
+}</string>
+    </property>
+    <property name="text">
+     <string>yellow</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="setRedBtn">
+    <property name="geometry">
+     <rect>
+      <x>860</x>
+      <y>22</y>
+      <width>80</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton#setRedBtn{
+border:1px solid rgb(255, 84, 92);
+border-radius:5px;
+padding:2px 4px;
+background:rgb(255, 84, 92);
+color:white;
+}</string>
+    </property>
+    <property name="text">
+     <string>set red</string>
+    </property>
+   </widget>
+   <widget class="QListView" name="listView">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>60</y>
+      <width>631</width>
+      <height>481</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QListView {
+   background-color: transparent;
+	border:1px solid #EFEFEF;
+}</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
