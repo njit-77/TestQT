@@ -23,6 +23,7 @@
 #include <QDialogButtonBox>
 #include <QGridLayout>
 #include <QSortFilterProxyModel>
+#include <QTableView>
 
 
 TestQT::TestQT(QWidget* parent)
@@ -334,7 +335,7 @@ TestQT::TestQT(QWidget* parent)
 			btnGroupFruits->addButton(radioButton11, 0);
 			btnGroupFruits->addButton(radioButton12, 1);
 			btnGroupFruits->addButton(radioButton13, 2);
-			
+
 
 			QButtonGroup* btnGroupVegetables = new QButtonGroup(this);
 
@@ -751,6 +752,56 @@ TestQT::TestQT(QWidget* parent)
 					// 显示菜单
 					menu.exec(QCursor::pos());
 				});
+		}
+	}
+
+	{
+		// QTableView
+		if (false)
+		{
+			QTableView* tableView = new QTableView(this);
+			tableView->resize(400, 400);
+			tableView->move(280, 80);
+			// 背景网格线设置 显示
+			tableView->setShowGrid(true);
+
+			// 网格背景画笔
+			/*
+			 * NoPen			无线
+			 * SolidLine		实线
+			 * DashLine			虚线
+			 * DotLine			点线
+			 * DashDotLine		虚点线
+			 * DashDotDotLine	虚点点线
+			 * CustomDashLine	自定义虚线
+			 */
+			tableView->setGridStyle(Qt::DotLine);
+
+			// 排序功能
+			tableView->setSortingEnabled(true);
+
+			// 设置列表头
+			QStandardItemModel* model = new QStandardItemModel;
+			QStringList labels = QObject::trUtf8("频率,功率,误差").simplified().split(",");
+			model->setHorizontalHeaderLabels(labels);
+
+			// 定义item
+			QStandardItem* item = 0;
+			for (int i = 0; i < 10; i++)
+			{
+				item = new QStandardItem(QString("%1").arg(i));
+				model->setItem(i, 0, item);
+				item = new QStandardItem(QString("%1").arg(i * 2));
+				model->setItem(i, 1, item);
+				item = new QStandardItem(QString("%1").arg(i * 3));
+				model->setItem(i, 2, item);
+			}
+
+			tableView->setStyleSheet("QTableView { border: none;"
+				"selection-background-color: #8EDE21;"
+				"color: red}");
+
+			tableView->setModel(model);
 		}
 	}
 }
