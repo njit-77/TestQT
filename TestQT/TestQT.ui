@@ -183,6 +183,25 @@ color:white;
 }</string>
     </property>
    </widget>
+   <widget class="QTreeView" name="treeView">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>270</y>
+      <width>256</width>
+      <height>261</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QTreeView {
+   background-color: transparent;
+	border:1px solid #EFEFEF;
+}
+QTreeView::item {
+	height: 50px;
+}</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

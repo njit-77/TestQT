@@ -554,6 +554,205 @@ TestQT::TestQT(QWidget* parent)
 				});
 		}
 	}
+
+	{
+		// QTreeView
+		if (false)
+		{
+			// 1、QTreeView常用设置项
+			// 单元格不能编辑
+			/*
+			 * NoEditTriggers = 0,     不可编辑
+			 * CurrentChanged = 1,     任何时候都能对单元格修改
+			 * DoubleClicked = 2,      双击单元格
+			 * SelectedClicked = 4,    单击已选中的内容
+			 * EditKeyPressed = 8,     键盘的编辑键，如F2
+			 * AnyKeyPressed = 16,     按下任意键就能修改
+			 * AllEditTriggers = 31    以上条件全包括
+			 */
+			ui.treeView->setEditTriggers(QTreeView::NoEditTriggers);
+
+			// 一次选中整行
+			/*
+			 * SelectItems,        选中单个单元格
+			 * SelectRows,         选中一行
+			 * SelectColumns       选中一列
+			 */
+			ui.treeView->setSelectionBehavior(QTreeView::SelectRows);
+
+			// 单选，配合上面的整行就是一次选单行
+			/*
+			 * NoSelection,         不能选择
+			 * SingleSelection,     单选
+			 * MultiSelection,      多选，不用按ctrl键即可多选，选择新项时不取消之前选择，已选中的再选择会取消选择
+			 * ExtendedSelection,   多选，按ctrl、shift键多选，选择新项时取消之前选择
+			 * ContiguousSelection  多选，需要按ctrl或shift都是shift选中效果,即选中两次点击之间的所有元素
+			 */
+			ui.treeView->setSelectionMode(QTreeView::SingleSelection);
+
+			// 每间隔一行颜色不一样，当有qss时该属性无效
+			ui.treeView->setAlternatingRowColors(true);
+
+			// 去掉鼠标移到单元格上时的虚线框
+			ui.treeView->setFocusPolicy(Qt::NoFocus);
+
+			// 2、列头相关设置
+			// 隐藏列头
+			//ui.treeView->header()->hide();
+			// 最后一列自适应宽度
+			ui.treeView->header()->setStretchLastSection(true);
+			// 列头文字默认居中对齐
+			ui.treeView->header()->setDefaultAlignment(Qt::AlignCenter);
+
+			// 3，构造Model
+			/*
+			 * 此处如果不是static修饰，connect[QItemSelectionModel::currentChanged]
+			 * 里面直接报错，查看发现获取的model数据地址是错误的，怀疑是局部变量生命周期没有那么久导致的
+			 */
+			static QStandardItemModel* model = new QStandardItemModel(ui.treeView);
+
+			// 设置列头
+			model->setHorizontalHeaderLabels(QStringList() << "序号" << "名称");
+			for (int i = 0; i < 5; i++)
+			{
+				// 一级节点，加入mModel
+				QList<QStandardItem*> items1;
+				QStandardItem* item1 = new QStandardItem(QString::number(i));
+				QStandardItem* item2 = new QStandardItem("一级节点");
+				items1.append(item1);
+				items1.append(item2);
+				model->appendRow(items1);
+
+				for (int j = 0; j < 5; j++)
+				{
+					// 二级节点,加入第1个一级节点
+					QList<QStandardItem*> items2;
+					QStandardItem* item3 = new QStandardItem(QString::number(j));
+					QStandardItem* item4 = new QStandardItem("二级节点");
+					items2.append(item3);
+					items2.append(item4);
+					item1->appendRow(items2);
+
+					for (int k = 0; k < 5; k++)
+					{
+						// 三级节点,加入第1个二级节点
+						QList<QStandardItem*> items3;
+						QStandardItem* item5 = new QStandardItem(QString::number(k));
+						QStandardItem* item6 = new QStandardItem("三级节点");
+						items3.append(item5);
+						items3.append(item6);
+						item3->appendRow(items3);
+					}
+				}
+			}
+
+			// 4，应用model
+			ui.treeView->setModel(model);
+
+			// 一些项在应用model后设置
+			// 5、设第一列初始宽度：第一列固定宽度
+			ui.treeView->header()->resizeSection(0, 100);
+			ui.treeView->header()->setSectionResizeMode(0, QHeaderView::Fixed);
+
+			// 6、默认选中一级节点的第一行
+			QModelIndex rootIndex = ui.treeView->rootIndex();
+			QModelIndex selIndex = model->index(0, 0, rootIndex);
+			ui.treeView->setCurrentIndex(selIndex);
+
+			connect(ui.treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, [&](const QItemSelection& selected, const QItemSelection& deselected)
+				{
+					// 选中内容变化，覆盖单选和多选的情况
+
+					QItemSelectionModel* selections = ui.treeView->selectionModel();
+
+					// 得到所有选中的index
+					QModelIndexList indexes = selections->selectedIndexes();
+					foreach(QModelIndex index, indexes)
+					{
+						// 从索引index获取item指针,mModel是tree的数据Model,这里是QStandardItemModel*类型
+						QStandardItem* item = model->itemFromIndex(index);
+						if (item)
+						{
+							//你的操作,比如取文本、取附带的data
+							QString text = item->text();
+							QString data1 = item->data(Qt::UserRole + 1).toString();
+							QString data2 = item->data(Qt::UserRole + 2).toInt();
+						}
+					}
+				});
+			connect(ui.treeView->selectionModel(), &QItemSelectionModel::currentChanged, this, [&](const QModelIndex& current, const QModelIndex& previous)
+				{
+					// 当前选中index变化，单个
+					QStandardItem* item = model->itemFromIndex(current);
+					if (item)
+					{
+						//你的操作,同上
+					}
+				});
+			connect(ui.treeView->selectionModel(), &QItemSelectionModel::currentRowChanged, this, [&](const QModelIndex& current, const QModelIndex& previous)
+				{
+					// 当前选中行变化，单行
+
+					// 取选中的这行的第一个元素的index
+					QModelIndex index = current.sibling(current.row(), 0);
+					QStandardItem* item = model->itemFromIndex(index);
+					if (item)
+					{
+						//你的操作,同上
+					}
+				});
+
+			// 7、信号槽，右键菜单
+			ui.treeView->setContextMenuPolicy(Qt::CustomContextMenu);
+
+			connect(ui.treeView, &QTreeView::customContextMenuRequested, this, [&](const QPoint& pos)
+				{
+					QString qss = "QMenu{color:#E8E8E8;background:#4D4D4D;margin:2px;}\
+                QMenu::item{padding:3px 20px 3px 20px;}\
+                QMenu::indicator{width:13px;height:13px;}\
+                QMenu::item:selected{color:#E8E8E8;border:0px solid #575757;background:#1E90FF;}\
+                QMenu::separator{height:1px;background:#757575;}";
+
+					QMenu menu;
+					menu.setStyleSheet(qss);    //可以给菜单设置样式
+
+					QModelIndex curIndex = ui.treeView->indexAt(pos);      //当前点击的元素的index
+					QModelIndex index = curIndex.sibling(curIndex.row(), 0); //该行的第1列元素的index
+					if (index.isValid())
+					{
+						//可获取元素的文本、data,进行其他判断处理
+						//QStandardItem* item = mModel->itemFromIndex(index);
+						//QString text = item->text();
+						//QVariant data = item->data(Qt::UserRole + 1);
+						//...
+
+						// 添加一行菜单，进行展开
+						menu.addAction("展开", this, [&](bool checked)
+							{
+								QModelIndex curIndex = ui.treeView->currentIndex();
+								QModelIndex index = curIndex.sibling(curIndex.row(), 0); //同一行第一列元素的index
+								if (index.isValid())
+								{
+									ui.treeView->expand(index);
+								}
+							});
+						// 添加一个分隔线
+						menu.addSeparator();
+						menu.addAction("折叠", this, [&](bool checked)
+							{
+								QModelIndex curIndex = ui.treeView->currentIndex();
+								QModelIndex index = curIndex.sibling(curIndex.row(), 0); //同一行第一列元素的index
+								if (index.isValid())
+								{
+									ui.treeView->collapse(index);
+								}
+							});
+					}
+					// 显示菜单
+					menu.exec(QCursor::pos());
+				});
+		}
+	}
 }
 
 void TestQT::initData()
