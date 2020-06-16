@@ -1,4 +1,4 @@
-#if _MSC_VER >= 1600
+Ôªø#if _MSC_VER >= 1600
 #pragma execution_character_set("utf-8")
 #endif
 
@@ -12,210 +12,447 @@
 #include <QInputDialog>
 #include <QString>
 #include <QMessageBox>
+#include <QToolButton>
+#include <QButtonGroup>
+#include <QRadioButton>
+#include <QCheckBox>
+#include <QLabel>
+#include <QCommandLinkButton>
+#include <QDialogButtonBox>
+#include <QGridLayout>
+
+
 
 TestQT::TestQT(QWidget* parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
 
-	connect(ui.pushButton, &QPushButton::clicked, this, [&]()
+	{
+		// QDialog
+		if (true)
 		{
-			if (false)
-			{
-				// QFileDialog
-				QString file_name = QFileDialog::getOpenFileName(this, "±ÍÃ‚", ".", "*.txt");
-				qDebug() << file_name;
-
-
-				//QFileDialog fd;
-
-				//// …Ë÷√ «¥Úø™ªπ «±£¥ÊŒƒº˛∂‘ª∞øÚ AcceptMode£®2∏ˆ√∂æŸ£©
-				///*
-				//* QFileDialog::AcceptOpen Œƒº˛∂‘ª∞øÚŒ™¥Úø™¿‡–Õ
-				//* QFileDialog::AcceptSave Œƒº˛∂‘ª∞øÚŒ™±£¥Ê¿‡–Õ
-				//*/
-				//fd.setAcceptMode(QFileDialog::AcceptOpen);
-
-				//// …Ë÷√∂‘ª∞øÚœ‘ æ–≈œ¢µƒœÍœ∏≥Ã∂»£®2∏ˆ√∂æŸ£©
-				///*
-				//* QFileDialog::Detail œÍœ∏
-				//* QFileDialog::List Ωˆ¡–±Ì
-				//*/
-				//fd.setViewMode(QFileDialog::Detail);
-
-				//// …Ë÷√µ„ª˜OK∫Û£¨∂‘ª∞øÚ∑µªÿ ≤√¥£®4∏ˆ√∂æŸ£©
-				///*
-				//* QFileDialog::AnyFile Œƒº˛√˚£¨Œﬁ¬€ «∑Ò¥Ê‘⁄
-				//* QFileDialog::ExistingFile ¥Ê‘⁄µƒ£¨µ•∏ˆŒƒº˛√˚
-				//* QFileDialog::Directory Œƒº˛º–√˚
-				//* QFileDialog::ExistingFiles ∂‡Œƒº˛
-				//*/
-				//fd.setFileMode(QFileDialog::AnyFile);
-
-				//// …Ë÷√±ÍÃ‚
-				//fd.setWindowTitle("±ÍÃ‚");
-
-				//// …Ë÷√ƒ¨»œ∫Û◊∫
-				//fd.setDefaultSuffix("txt");
-
-				//// ªÒ»°∂‘ª∞øÚ÷–µƒƒø¬ºµÿ÷∑
-				//QDir dir = fd.directory();
-			}
-			if (false)
-			{
-				// QColorDialog
-				QColor color = QColorDialog::getColor(Qt::black);
-				if (color.isValid())
+			connect(ui.pushButton, &QPushButton::clicked, this, [&]()
 				{
-					qDebug() << color.redF() << color.greenF() << color.blueF();
-				}
-			}
-			if (false)
-			{
-				// QFontDialog
-				bool ok;
-				QFont font = QFontDialog::getFont(&ok, QFont("Helvetica [Cronyx]", 10));
-				qDebug() << ok;
-				if (ok)
-				{
-					// font±ª…Ë÷√Œ™”√ªß—°‘Òµƒ◊÷ÃÂ
-				}
-				else
-				{
-					// ”√ªß»°œ˚’‚∏ˆ∂‘ª∞øÚ£¨font±ª…Ë÷√Œ™≥ı º÷µ£¨‘⁄’‚¿ÔæÕ «Helvetica [Cronyx], 10
-				}
-			}
-			if (false)
-			{
-				// QInputDialog
-				if (false)
-				{
-					//  ‰»Î◊÷∑˚¥Æ
-					QString dlgTitle = " ‰»ÎŒƒ◊÷∂‘ª∞øÚ";
-					QString txtLabel = "«Î ‰»ÎŒƒº˛√˚";
-					QString defaultInput = "–¬Ω®Œƒº˛.txt";
-					QLineEdit::EchoMode echoMode = QLineEdit::Normal; // ’˝≥£Œƒ◊÷ ‰»Î
-																	  // QLineEdit::EchoMode echoMode = QLineEdit::Password; // √‹¬Î ‰»Î
-
-					bool ok = false;
-					QString text = QInputDialog::getText(this, dlgTitle, txtLabel, echoMode, defaultInput, &ok);
-					if (ok && !text.isEmpty())
-						ui.plainTextEdit->append(text);
-				}
-				if (false)
-				{
-					//  ‰»Î’˚ ˝
-					QString dlgTitle = " ‰»Î’˚ ˝∂‘ª∞øÚ";
-					QString txtLabel = "…Ë÷√◊÷ÃÂ¥Û–°";
-					int defaultValue = ui.plainTextEdit->font().pointSize(); // œ÷”–◊÷ÃÂ¥Û–°
-					int minValue = 6, maxValue = 50, stepValue = 1; // ∑∂Œß£¨≤Ω≥§
-
-					bool ok = false;
-					int inputValue = QInputDialog::getInt(this, dlgTitle, txtLabel, defaultValue, minValue, maxValue, stepValue, &ok);
-					if (ok)
+					if (false)
 					{
-						QFont font = ui.plainTextEdit->font();
-						font.setPointSize(inputValue);
-						ui.plainTextEdit->setFont(font);
+						// QFileDialog
+						QString file_name = QFileDialog::getOpenFileName(this, "Ê†áÈ¢ò", ".", "*.txt");
+						qDebug() << file_name;
+
+
+						//QFileDialog fd;
+
+						//// ËÆæÁΩÆÊòØÊâìÂºÄËøòÊòØ‰øùÂ≠òÊñá‰ª∂ÂØπËØùÊ°Ü AcceptModeÔºà2‰∏™Êûö‰∏æÔºâ
+						///*
+						//* QFileDialog::AcceptOpen Êñá‰ª∂ÂØπËØùÊ°Ü‰∏∫ÊâìÂºÄÁ±ªÂûã
+						//* QFileDialog::AcceptSave Êñá‰ª∂ÂØπËØùÊ°Ü‰∏∫‰øùÂ≠òÁ±ªÂûã
+						//*/
+						//fd.setAcceptMode(QFileDialog::AcceptOpen);
+
+						//// ËÆæÁΩÆÂØπËØùÊ°ÜÊòæÁ§∫‰ø°ÊÅØÁöÑËØ¶ÁªÜÁ®ãÂ∫¶Ôºà2‰∏™Êûö‰∏æÔºâ
+						///*
+						//* QFileDialog::Detail ËØ¶ÁªÜ
+						//* QFileDialog::List ‰ªÖÂàóË°®
+						//*/
+						//fd.setViewMode(QFileDialog::Detail);
+
+						//// ËÆæÁΩÆÁÇπÂáªOKÂêéÔºåÂØπËØùÊ°ÜËøîÂõû‰ªÄ‰πàÔºà4‰∏™Êûö‰∏æÔºâ
+						///*
+						//* QFileDialog::AnyFile Êñá‰ª∂ÂêçÔºåÊó†ËÆ∫ÊòØÂê¶Â≠òÂú®
+						//* QFileDialog::ExistingFile Â≠òÂú®ÁöÑÔºåÂçï‰∏™Êñá‰ª∂Âêç
+						//* QFileDialog::Directory Êñá‰ª∂Â§πÂêç
+						//* QFileDialog::ExistingFiles Â§öÊñá‰ª∂
+						//*/
+						//fd.setFileMode(QFileDialog::AnyFile);
+
+						//// ËÆæÁΩÆÊ†áÈ¢ò
+						//fd.setWindowTitle("Ê†áÈ¢ò");
+
+						//// ËÆæÁΩÆÈªòËÆ§ÂêéÁºÄ
+						//fd.setDefaultSuffix("txt");
+
+						//// Ëé∑ÂèñÂØπËØùÊ°Ü‰∏≠ÁöÑÁõÆÂΩïÂú∞ÂùÄ
+						//QDir dir = fd.directory();
 					}
-				}
-				if (false)
-				{
-					//  ‰»Î∏°µ„ ˝
-					QString dlgTitle = " ‰»Î∏°µ„ ˝∂‘ª∞øÚ";
-					QString txtLabel = " ‰»Î“ª∏ˆ∏°µ„ ˝";
-					float defaultValue = (float)3.13;
-
-					float minValue = 0, maxValue = 10000; // ∑∂Œß
-					int decimals = 2; // –° ˝µ„Œª ˝
-
-					bool ok = false;
-					float inputValue = QInputDialog::getDouble(this, dlgTitle, txtLabel, defaultValue, minValue, maxValue, decimals, &ok);
-
-					if (ok) // »∑»œ—°‘Ò
+					if (false)
 					{
-						QString str = QString::asprintf(" ‰»Î¡À“ª∏ˆ∏°µ„ ˝:%.2f", inputValue);
-						ui.plainTextEdit->append(str);
+						// QColorDialog
+						QColor color = QColorDialog::getColor(Qt::black);
+						if (color.isValid())
+						{
+							qDebug() << color.redF() << color.greenF() << color.blueF();
+						}
 					}
-				}
-				if (false)
-				{
-					// Ãıƒø—°‘Ò ‰»Î
-					QStringList items;
-					items << "”≈–„ " << "¡º∫√ " << "∫œ∏Ò " << "≤ª∫œ∏Ò";
-
-					QString dlgTitle = "Ãıƒø—°‘Ò∂‘ª∞øÚ";
-					QString txtLabel = "«Î—°‘Òº∂±";
-					int curIndex = 0; // ≥ı º—°‘ÒœÓ
-					bool editable = false; // ComboBox «∑Òø…±‡º≠
-					bool ok = false;
-					QString text = QInputDialog::getItem(this, dlgTitle, txtLabel, items, curIndex, editable, &ok);
-
-					if (ok && !text.isEmpty())
+					if (false)
 					{
-						ui.plainTextEdit->append(text);
+						// QFontDialog
+						bool ok;
+						QFont font = QFontDialog::getFont(&ok, QFont("Helvetica [Cronyx]", 10));
+						qDebug() << ok;
+						if (ok)
+						{
+							// fontË¢´ËÆæÁΩÆ‰∏∫Áî®Êà∑ÈÄâÊã©ÁöÑÂ≠ó‰Ωì
+						}
+						else
+						{
+							// Áî®Êà∑ÂèñÊ∂àËøô‰∏™ÂØπËØùÊ°ÜÔºåfontË¢´ËÆæÁΩÆ‰∏∫ÂàùÂßãÂÄºÔºåÂú®ËøôÈáåÂ∞±ÊòØHelvetica [Cronyx], 10
+						}
 					}
-				}
-			}
-			if (true)
-			{
-				// QMessageBox
-
-				// Information
-				{
-					QString dlgTitle = "informationœ˚œ¢øÚ";
-					QString strInfo = "Œƒº˛“—æ≠¥Úø™£¨◊÷ÃÂ¥Û–°“—…Ë÷√";
-					QMessageBox::information(this, dlgTitle, strInfo, QMessageBox::StandardButton::Ok, QMessageBox::StandardButton::NoButton);
-				}
-
-				// Warning
-				{
-					QString dlgTitle = "warningœ˚œ¢øÚ";
-					QString strInfo = "Œƒº˛ƒ⁄»›“—æ≠±ª–ﬁ∏ƒ ";
-					QMessageBox::information(this, dlgTitle, strInfo);
-				}
-
-				// Critical
-				{
-					QString dlgTitle = "criticalœ˚œ¢øÚ";
-					QString strInfo = "”–≤ª√˜≥Ã–Ú∑√Œ Õ¯¬Á ";
-					QMessageBox::information(this, dlgTitle, strInfo);
-				}
-
-				// About
-				{
-					QString dlgTitle = "aboutœ˚œ¢øÚ";
-					QString strInfo = "Œ“ø™∑¢µƒ ˝æ›≤Èø¥»Ìº˛ V1.0 \n ±£¡ÙÀ˘”–∞Ê»® ";
-					QMessageBox::information(this, dlgTitle, strInfo);
-				}
-
-				// »∑»œ—°‘Ò∂‘ª∞øÚ
-				{
-					QString dlgTitle = "Questionœ˚œ¢øÚ";
-					QString strInfo = "Œƒº˛“—æ≠±ª–ﬁ∏ƒ£¨ «∑Ò±£¥Ê–ﬁ∏ƒ£ø";
-
-					QMessageBox::StandardButton defaultBtn = QMessageBox::NoButton; // »± °∞¥≈•
-
-					QMessageBox::StandardButton result; // ∑µªÿ—°‘Òµƒ∞¥≈•
-					result = QMessageBox::question(this, dlgTitle, strInfo, QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, defaultBtn);
-
-					if (QMessageBox::Yes == result)
+					if (false)
 					{
-						ui.plainTextEdit->append("Questionœ˚œ¢øÚ£∫Yes ±ª—°‘Ò");
+						// QInputDialog
+						if (false)
+						{
+							// ËæìÂÖ•Â≠óÁ¨¶‰∏≤
+							QString dlgTitle = "ËæìÂÖ•ÊñáÂ≠óÂØπËØùÊ°Ü";
+							QString txtLabel = "ËØ∑ËæìÂÖ•Êñá‰ª∂Âêç";
+							QString defaultInput = "Êñ∞Âª∫Êñá‰ª∂.txt";
+							QLineEdit::EchoMode echoMode = QLineEdit::Normal; // Ê≠£Â∏∏ÊñáÂ≠óËæìÂÖ•
+																			  // QLineEdit::EchoMode echoMode = QLineEdit::Password; // ÂØÜÁ†ÅËæìÂÖ•
+
+							bool ok = false;
+							QString text = QInputDialog::getText(this, dlgTitle, txtLabel, echoMode, defaultInput, &ok);
+							if (ok && !text.isEmpty())
+								ui.plainTextEdit->append(text);
+						}
+						if (false)
+						{
+							// ËæìÂÖ•Êï¥Êï∞
+							QString dlgTitle = "ËæìÂÖ•Êï¥Êï∞ÂØπËØùÊ°Ü";
+							QString txtLabel = "ËÆæÁΩÆÂ≠ó‰ΩìÂ§ßÂ∞è";
+							int defaultValue = ui.plainTextEdit->font().pointSize(); // Áé∞ÊúâÂ≠ó‰ΩìÂ§ßÂ∞è
+							int minValue = 6, maxValue = 50, stepValue = 1; // ËåÉÂõ¥ÔºåÊ≠•Èïø
+
+							bool ok = false;
+							int inputValue = QInputDialog::getInt(this, dlgTitle, txtLabel, defaultValue, minValue, maxValue, stepValue, &ok);
+							if (ok)
+							{
+								QFont font = ui.plainTextEdit->font();
+								font.setPointSize(inputValue);
+								ui.plainTextEdit->setFont(font);
+							}
+						}
+						if (false)
+						{
+							// ËæìÂÖ•ÊµÆÁÇπÊï∞
+							QString dlgTitle = "ËæìÂÖ•ÊµÆÁÇπÊï∞ÂØπËØùÊ°Ü";
+							QString txtLabel = "ËæìÂÖ•‰∏Ä‰∏™ÊµÆÁÇπÊï∞";
+							float defaultValue = (float)3.13;
+
+							float minValue = 0, maxValue = 10000; // ËåÉÂõ¥
+							int decimals = 2; // Â∞èÊï∞ÁÇπ‰ΩçÊï∞
+
+							bool ok = false;
+							float inputValue = QInputDialog::getDouble(this, dlgTitle, txtLabel, defaultValue, minValue, maxValue, decimals, &ok);
+
+							if (ok) // Á°ÆËÆ§ÈÄâÊã©
+							{
+								QString str = QString::asprintf("ËæìÂÖ•‰∫Ü‰∏Ä‰∏™ÊµÆÁÇπÊï∞:%.2f", inputValue);
+								ui.plainTextEdit->append(str);
+							}
+						}
+						if (false)
+						{
+							// Êù°ÁõÆÈÄâÊã©ËæìÂÖ•
+							QStringList items;
+							items << "‰ºòÁßÄ " << "ËâØÂ•Ω " << "ÂêàÊ†º " << "‰∏çÂêàÊ†º";
+
+							QString dlgTitle = "Êù°ÁõÆÈÄâÊã©ÂØπËØùÊ°Ü";
+							QString txtLabel = "ËØ∑ÈÄâÊã©Á∫ßÂà´";
+							int curIndex = 0; // ÂàùÂßãÈÄâÊã©È°π
+							bool editable = false; // ComboBoxÊòØÂê¶ÂèØÁºñËæë
+							bool ok = false;
+							QString text = QInputDialog::getItem(this, dlgTitle, txtLabel, items, curIndex, editable, &ok);
+
+							if (ok && !text.isEmpty())
+							{
+								ui.plainTextEdit->append(text);
+							}
+						}
 					}
-					else if (QMessageBox::No == result)
+					if (false)
 					{
-						ui.plainTextEdit->append("Questionœ˚œ¢øÚ£∫No ±ª—°‘Ò");
+						// QMessageBox
+
+						// Information
+						{
+							QString dlgTitle = "informationÊ∂àÊÅØÊ°Ü";
+							QString strInfo = "Êñá‰ª∂Â∑≤ÁªèÊâìÂºÄÔºåÂ≠ó‰ΩìÂ§ßÂ∞èÂ∑≤ËÆæÁΩÆ";
+							QMessageBox::information(this, dlgTitle, strInfo, QMessageBox::StandardButton::Ok, QMessageBox::StandardButton::NoButton);
+						}
+
+						// Warning
+						{
+							QString dlgTitle = "warningÊ∂àÊÅØÊ°Ü";
+							QString strInfo = "Êñá‰ª∂ÂÜÖÂÆπÂ∑≤ÁªèË¢´‰øÆÊîπ ";
+							QMessageBox::information(this, dlgTitle, strInfo);
+						}
+
+						// Critical
+						{
+							QString dlgTitle = "criticalÊ∂àÊÅØÊ°Ü";
+							QString strInfo = "Êúâ‰∏çÊòéÁ®ãÂ∫èËÆøÈóÆÁΩëÁªú ";
+							QMessageBox::information(this, dlgTitle, strInfo);
+						}
+
+						// About
+						{
+							QString dlgTitle = "aboutÊ∂àÊÅØÊ°Ü";
+							QString strInfo = "ÊàëÂºÄÂèëÁöÑÊï∞ÊçÆÊü•ÁúãËΩØ‰ª∂ V1.0 \n ‰øùÁïôÊâÄÊúâÁâàÊùÉ ";
+							QMessageBox::information(this, dlgTitle, strInfo);
+						}
+
+						// Á°ÆËÆ§ÈÄâÊã©ÂØπËØùÊ°Ü
+						{
+							QString dlgTitle = "QuestionÊ∂àÊÅØÊ°Ü";
+							QString strInfo = "Êñá‰ª∂Â∑≤ÁªèË¢´‰øÆÊîπÔºåÊòØÂê¶‰øùÂ≠ò‰øÆÊîπÔºü";
+
+							QMessageBox::StandardButton defaultBtn = QMessageBox::NoButton; // Áº∫ÁúÅÊåâÈíÆ
+
+							QMessageBox::StandardButton result; // ËøîÂõûÈÄâÊã©ÁöÑÊåâÈíÆ
+							result = QMessageBox::question(this, dlgTitle, strInfo, QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, defaultBtn);
+
+							if (QMessageBox::Yes == result)
+							{
+								ui.plainTextEdit->append("QuestionÊ∂àÊÅØÊ°ÜÔºöYes Ë¢´ÈÄâÊã©");
+							}
+							else if (QMessageBox::No == result)
+							{
+								ui.plainTextEdit->append("QuestionÊ∂àÊÅØÊ°ÜÔºöNo Ë¢´ÈÄâÊã©");
+							}
+							else if (QMessageBox::Cancel == result)
+							{
+								ui.plainTextEdit->append("QuestionÊ∂àÊÅØÊ°ÜÔºöCancel Ë¢´ÈÄâÊã©");
+							}
+							else
+							{
+								ui.plainTextEdit->append("QuestionÊ∂àÊÅØÊ°ÜÔºöÊó†ÈÄâÊã©");
+							}
+						}
 					}
-					else if (QMessageBox::Cancel == result)
+				});
+		}
+	}
+
+	{
+		// QPushButton
+		if (false)
+		{
+			QPushButton* btn = new QPushButton;
+
+			// btnÂ∫îËØ•‰æùËµñ‰∫é‰∏ªÁ™óÂè£
+			btn->setParent(this);
+
+			// btnÊòæÁ§∫ÊñáÂ≠ó
+			btn->setText("ÊàëÁöÑÂ§©");
+		}
+
+		if (false)
+		{
+			QPushButton* btn = new QPushButton("ÊàëÁöÑÂ§©", this);
+
+			// ÁßªÂä®Á™óÂè£
+			btn->move(100, 100);
+
+			// ÈáçÁΩÆÁ™óÂè£Â§ßÂ∞è
+			resize(960, 640);
+
+			// btn resize
+			btn->resize(50, 50);
+
+			//ËÆæÁΩÆÁ™óÂè£Ê†áÈ¢òÂêçÁß∞
+			this->setWindowTitle("ÊàëÁöÑÂ§©!");
+		}
+	}
+
+	{
+		// QToolButton
+		if (false)
+		{
+			QToolButton* pButton = new QToolButton(this);
+
+			// ËÆæÁΩÆÊåâÈíÆÊòØÂê¶ÊòæÁ§∫‰∏Ä‰∏™ÁÆ≠Â§¥
+			pButton->setArrowType(Qt::LeftArrow);
+
+			pButton->setText("Left Arrow");
+
+			pButton->resize(QSize(100, 100));
+
+			pButton->move(50, 50);
+
+			// ËÆæÁΩÆÊåâÈíÆÈ£éÊ†º
+			/* Qt::ToolButtonIconOnly		Âè™ÊòæÁ§∫ÂõæÊ†á
+			 * Qt::ToolButtonTextOnly		Âè™ÊòæÁ§∫ÊñáÊú¨
+			 * Qt::ToolButtonTextBesideIcon	ÊñáÊú¨ÊòæÁ§∫Âú®ÂõæÊ†áÊóÅËæπ
+			 * Qt::ToolButtonTextUnderIcon	ÊñáÊú¨ÊòæÁ§∫Âú®ÂõæÊ†á‰∏ãËæπ
+			 * Qt::ToolButtonFollowStyle	ÈÅµÂæ™QStyle::StyleHint
+			 */
+			pButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+			pButton->setStyleSheet("QToolButton{border: none; background: rgb(68, 69, 73); color: rgb(0, 160, 230);}");
+
+			QAction* pAction = new QAction(this);
+			pAction->setText("Ê≤≥ÂçóÊ¥õÈò≥");
+
+			pButton->setIconSize(QSize(48, 48));
+			pAction->setToolTip("Áâ°‰∏πËä±");
+			pButton->setDefaultAction(pAction);
+			pButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+		}
+	}
+
+	{
+		// QRadioButton
+		if (false)
+		{
+			QButtonGroup* btnGroupFruits = new QButtonGroup(this);
+
+			QRadioButton* radioButton11 = new QRadioButton("ËãπÊûú", this);
+			radioButton11->setChecked(true);
+			radioButton11->move(20, 300);
+			connect(radioButton11, &QRadioButton::clicked, this, [&]()
+				{
+					ui.plainTextEdit->append("ËãπÊûú");
+				});
+
+			QRadioButton* radioButton12 = new QRadioButton("ËäíÊûú", this);
+			radioButton12->move(80, 300);
+			connect(radioButton12, &QRadioButton::clicked, this, [&]()
+				{
+					ui.plainTextEdit->append("ËäíÊûú");
+				});
+
+			QRadioButton* radioButton13 = new QRadioButton("ÂúüË±Ü", this);
+			radioButton13->move(140, 300);
+			connect(radioButton13, &QRadioButton::clicked, this, [&]()
+				{
+					ui.plainTextEdit->append("ÂúüË±Ü");
+				});
+
+			btnGroupFruits->addButton(radioButton11, 0);
+			btnGroupFruits->addButton(radioButton12, 1);
+			btnGroupFruits->addButton(radioButton13, 2);
+			
+
+			QButtonGroup* btnGroupVegetables = new QButtonGroup(this);
+
+			QRadioButton* radioButton21 = new QRadioButton("ÂúüË±Ü", this);
+			radioButton21->setChecked(true);
+			radioButton21->move(40, 330);
+			connect(radioButton21, &QRadioButton::clicked, this, [&]()
+				{
+					ui.plainTextEdit->append("ÂúüË±Ü");
+				});
+
+			QRadioButton* radioButton22 = new QRadioButton("ÈùíÊ§í", this);
+			radioButton22->move(40, 360);
+			connect(radioButton22, &QRadioButton::clicked, this, [&]()
+				{
+					ui.plainTextEdit->append("ÈùíÊ§í");
+				});
+
+			QRadioButton* radioButton23 = new QRadioButton("Ëè†Ëèú", this);
+			radioButton23->move(40, 390);
+			connect(radioButton23, &QRadioButton::clicked, this, [&]()
+				{
+					ui.plainTextEdit->append("Ëè†Ëèú");
+				});
+			btnGroupVegetables->addButton(radioButton21, 0);
+			btnGroupVegetables->addButton(radioButton22, 1);
+			btnGroupVegetables->addButton(radioButton23, 2);
+		}
+	}
+
+	{
+		// QCheckBox
+		if (false)
+		{
+			// ‰∏âÊÄÅÊ®°Âºè
+			QLabel* pLabel = new QLabel(this);
+			pLabel->setText("Click CheckBox...");
+			pLabel->resize(200, 30);
+			pLabel->move(20, 410);
+
+			QCheckBox* pCheckBox = new QCheckBox(this);
+			pCheckBox->setText("‰∏âÊÄÅÂ§çÈÄâÊ°Ü");
+			pCheckBox->resize(200, 30);
+			pCheckBox->move(20, 450);
+
+			// ÂºÄÂêØ‰∏âÊÄÅÊ®°Âºè
+			pCheckBox->setTristate();
+
+			// ËøûÊé•‰ø°Âè∑ÊßΩ
+			connect(pCheckBox, &QCheckBox::stateChanged, this, [&](int state)
+				{
+					if (Qt::Checked == state)
 					{
-						ui.plainTextEdit->append("Questionœ˚œ¢øÚ£∫Cancel ±ª—°‘Ò");
+						ui.plainTextEdit->append("Checked");
 					}
-					else
+					else if (Qt::PartiallyChecked == state)
 					{
-						ui.plainTextEdit->append("Questionœ˚œ¢øÚ£∫Œﬁ—°‘Ò");
+						ui.plainTextEdit->append("PartiallyChecked");
 					}
-				}
-			}
-		});
+					else if (Qt::Unchecked == state)
+					{
+						ui.plainTextEdit->append("Unchecked");
+					}
+				});
+		}
+	}
+
+	{
+		// QCommandLinkBut‚Äã‚Äãton
+		if (false)
+		{
+			QCommandLinkButton* cmmBtn = new QCommandLinkButton("Version", "Version Project", this);
+			cmmBtn->setFlat(true);
+			cmmBtn->move(250, 250);
+			cmmBtn->resize(200, 100);
+			connect(cmmBtn, &QCommandLinkButton::clicked, this, [&]()
+				{
+
+				});
+		}
+	}
+
+	{
+		// QDialogButtonBox
+		if (false)
+		{
+			QDialogButtonBox* buttonBox = new QDialogButtonBox(Qt::Vertical, this);
+			QGridLayout* layout = new QGridLayout();
+
+			QPushButton* add = new QPushButton(QObject::tr("&Add"));
+			QPushButton* reset = new QPushButton(QObject::tr("&Reset"));
+			QPushButton* remove = new QPushButton(QObject::tr("&Remove"));
+			QPushButton* help = new QPushButton(QObject::tr("Help"));
+
+			buttonBox->addButton(add, QDialogButtonBox::ActionRole);
+			buttonBox->addButton(reset, QDialogButtonBox::ActionRole);
+			buttonBox->addButton(remove, QDialogButtonBox::ActionRole);
+			buttonBox->addButton(help, QDialogButtonBox::ActionRole);
+
+			connect(add, &QPushButton::clicked, this, [&]()
+				{
+					ui.plainTextEdit->append("Add Clicked...");
+				});
+			connect(reset, &QPushButton::clicked, this, [&]()
+				{
+					ui.plainTextEdit->append("Reset Clicked...");
+				});
+			connect(remove, &QPushButton::clicked, this, [&]()
+				{
+					ui.plainTextEdit->append("Remove Clicked...");
+				});
+			connect(help, &QPushButton::clicked, this, [&]()
+				{
+					ui.plainTextEdit->append("Help Clicked...");
+				});
+
+			buttonBox->move(160, 250);
+			buttonBox->resize(100, 500);
+			layout->addWidget(buttonBox, 0, 0, Qt::AlignCenter);
+			setLayout(layout);
+		}
+	}
 }
