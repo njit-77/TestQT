@@ -30,4 +30,19 @@ private:
 
 	void initData();
 	void updateButtonNum();
+
+public:
+	typedef enum
+	{
+		PROXY_NONE,     //没有代理
+
+		PROXY_BROWSER,   //浏览器代理
+
+		PROXY_HTTP,      //HTTP代理
+		PROXY_SOCKS4,    //SOCK4代理
+		PROXY_SOCK5,     //SOCK5代理 
+	}Proxy_Types;
+
+	Q_ENUM(Proxy_Types)
+
 };

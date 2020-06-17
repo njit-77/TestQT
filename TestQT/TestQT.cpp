@@ -24,6 +24,15 @@
 #include <QGridLayout>
 #include <QSortFilterProxyModel>
 #include <QTableView>
+#include <QComboBox>
+#include <QMetaEnum>
+#include <QDateTimeEdit>
+#include <QGroupBox>
+#include <QScrollArea>
+#include <QProgressBar>
+#include <QCalendarWidget>
+#include <QLCDNumber>
+#include <QTimer>
 
 
 TestQT::TestQT(QWidget* parent)
@@ -802,6 +811,556 @@ TestQT::TestQT(QWidget* parent)
 				"color: red}");
 
 			tableView->setModel(model);
+		}
+	}
+
+	{
+		// QComboBox
+		if (false)
+		{
+			QComboBox* comboBox = new QComboBox(this);
+			comboBox->move(20, 430);
+			comboBox->setStyleSheet("QComboBox{border:1px solid gray;}"
+				"QComboBox QAbstractItemView::item{height:20px;}" //下拉选项高度
+				"QComboBox::down-arrow{image:url(:/icon/arrowdown);}" //下拉箭头
+				"QComboBox::drop-down{border:0px;}"); //下拉按钮
+			comboBox->setView(new QListView());
+
+			comboBox->addItem("none", PROXY_NONE);
+			comboBox->addItem("browser", PROXY_BROWSER);
+			comboBox->addItem("http", PROXY_HTTP);
+			comboBox->addItem("socks4", PROXY_SOCKS4);
+			comboBox->addItem("socks5", PROXY_SOCK5);
+
+			comboBox->setItemText(0, tr("no proxy"));
+			comboBox->setItemText(1, tr("use browser"));
+			comboBox->setItemText(2, tr("http"));
+			comboBox->setItemText(3, tr("socks4"));
+			comboBox->setItemText(4, tr("socks5"));
+
+			connect(comboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [&, comboBox](int)
+				{
+					Proxy_Types proxy_type = (Proxy_Types)(comboBox->currentIndex());
+					QMetaEnum metaEnum = QMetaEnum::fromType<Proxy_Types>();
+					ui.plainTextEdit->append(metaEnum.valueToKey(proxy_type));
+
+					//{
+					//	// enum转QString
+					//	QString enum2string(int enumration)
+					//	{
+					//		QMetaEnum metaEnum = QMetaEnum::fromType<QNetworkReply::NetworkError>();
+					//		return metaEnum.valueToKey(enumration);
+					//	}
+
+					//	// QString转enum
+					//	int string2enum(QString enumration)
+					//	{
+					//		QMetaEnum metaEnum = QMetaEnum::fromType<QNetworkReply::NetworkError>();
+					//		return metaEnum.keyToValue(enumration);
+					//	}
+					//}
+
+				});
+		}
+	}
+
+	{
+		// QLineEdit
+		if (false)
+		{
+			QLineEdit* lineEdit = new QLineEdit(this);
+			lineEdit->resize(200, 30);
+			lineEdit->move(20, 430);
+
+			// setPlaceholderText()设置提示文字
+			lineEdit->setPlaceholderText("电影、影人、影院、电视剧");
+
+			// setEchoMode()设置模式
+			/*
+			 * Normal				默认，输入什么即显示什么
+			 * NoEcho				任何输入都看不见
+			 * Password				密码，一般是用小黑点覆盖你所输入的字符
+			 * PasswordEchoOnEdit	编辑时输入字符显示输入内容，否则用小黑点代替
+			 */
+			lineEdit->setEchoMode(QLineEdit::Normal);
+
+			// setAlignment()设置文本位置
+			/*
+			 * Qt::AlignLeft
+			 * Qt::AlignCenter
+			 * Qt::AlignRight
+			 */
+			lineEdit->setAlignment(Qt::AlignLeft);
+
+			// setReadOnly()设置能否编辑
+			/*
+			* true
+			* false
+			*/
+			lineEdit->setReadOnly(false);
+
+			// setValidator()对输入进行限制
+			/*
+			 * lineEdit->setValidator(0);							无限制
+			 * lineEdit->setValidator(new QIntValidator(lineEdit));	只能输入整数
+			 *
+			 {
+				 // 实例，只能输入-180到180之间的小数，小数点后最多两位（可用于限制经纬度等）
+				 QDoubleValidator* pDfValidator = new QDoubleValidator(-180.0, 180.0, 2, this);
+				 pDfValidator->setNotation(QDoubleValidator::StandardNotation);
+				 lineEdit->setValidator(new QIntValidator(lineEdit));
+			 }
+			 */
+			 //QDoubleValidator *pDfValidator = new QDoubleValidator(-180, 180, 2, this);
+			 //pDfValidator->setNotation(QDoubleValidator::StandardNotation);
+			 //lineEdit->setValidator(pDfValidator);
+
+			 // setInputMask()对输入进行限制
+			 /*
+			  * lineEdit->setInputMask("");
+			  * lineEdit->setInputMask("+99 99 99 99 99;_");
+			  *
+			  {
+				  lineEdit->setInputMask("0000-00-00");
+				  lineEdit->setText("00000000");
+				  lineEdit->setCursorPosition(0);
+			  }
+			  lineEdit->setInputMask(">AAAAA-AAAAA-AAAAA-AAAAA-AAAAA;#");
+			  */
+			  //lineEdit->setInputMask(">AAAAA-AAAAA-AAAAA-AAAAA-AAAAA");
+
+			  // setMaxLength()设置可以输入的最多字符数
+			  //lineEdit->setMaxLength(9);
+
+			  // validator和inputmask的结合
+			  // 比如纬度用“度:分:秒”的格式表示，分和秒的范围都是00-59，度的范围是-89到89。
+			  //QRegExp rx("(-|\\+)?[0-8]\\d:[0-5]\\d:[0-5]\\d");
+			  //lineEdit->setValidator(new QRegExpValidator(rx, lineEdit));
+			  //lineEdit->setInputMask("#00:00:00;0");
+			  //lineEdit->setText("+00:00:00");
+		}
+	}
+
+	{
+		// QTextEdit
+		if (false)
+		{
+			QTextEdit* textEdit = new QTextEdit(this);
+			textEdit->resize(300, 300);
+			textEdit->move(20, 300);
+
+			// 设置字体粗细
+			textEdit->setFontWeight(QFont::Light);
+
+			// 设置字体斜体
+			/*
+			* true	 斜体
+			* false 非斜体
+			*/
+			textEdit->setFontItalic(false);
+
+			// 设置下划线
+			/*
+			* true	下划线
+			* false 无
+			*/
+			textEdit->setFontUnderline(false);
+
+			// 设置字体类型
+			//textEdit->setFontFamily("仿宋");
+
+			// 设置字体大小
+			textEdit->setFontPointSize(32);
+
+			// 设置文本色
+			textEdit->setTextColor(QColor('red'));
+
+			// 设置文本背景色
+			textEdit->setTextBackgroundColor(QColor(255, 0, 255));
+
+			// 设置对齐方式
+			/*
+			* Horizontal flags are:
+			* Qt::AlignLeft		左对齐
+			* Qt::AlignRight		右对齐
+			* Qt::AlignHCenter		居中对齐
+			* Qt::AlignJustify		两端对齐
+			*
+			* Vertical flags are:
+			* Qt::AlignTop
+			* Qt::AlignBottom
+			* Qt::AlignVCenter
+			* Qt::AlignBaseline
+			*/
+			textEdit->setAlignment(Qt::AlignLeft);
+
+			// 设置占位文本
+			textEdit->setPlaceholderText("占位文本");
+
+			{
+				// 普通文本设定
+				if (false)
+				{
+					// 普通文本设定
+					textEdit->setPlainText("[普通文本设定]");
+
+					// 光标处插入普通文本
+					textEdit->insertPlainText("<光标处插入普通文本>");
+
+					// 普通文本获取
+					ui.plainTextEdit->append(textEdit->toPlainText());
+				}
+
+				// html标签文本设定
+				if (false)
+				{
+					// 普通文本设定
+					textEdit->setHtml("[<p>这是一个段落。。。</p>]");
+
+					// 光标处插入普通文本
+					textEdit->insertHtml("{<a href='http://www.baidu.com'> 百度</a>}");
+
+					// 普通文本获取
+					ui.plainTextEdit->append(textEdit->toHtml());
+				}
+
+				// 自动设置文本
+				if (false)
+				{
+					textEdit->setText("2020/06/17");
+				}
+
+				// 文本追加(不管光标位置)
+				//textEdit->append("文本追加(不管光标位置)");
+
+				// 文本清除
+				//textEdit->clear();
+			}
+
+			{
+				// 插入列表
+				if (true)
+				{
+					auto tc = textEdit->textCursor();
+
+					/*
+					* 常用列表样式枚举值
+					* QTextListFormat.ListDisc			圆点
+					* QTextListFormat.ListCircle		空心圆
+					* QTextListFormat.ListSquare		方块
+					* QTextListFormat.ListDecimal		数字升序
+					* QTextListFormat.ListUpperRoman	大写罗马数字
+					* QTextListFormat.ListLowerRoman	小写罗马数字
+					* QTextListFormat.ListUpperAlpha	大写拉丁字母
+					* QTextListFormat.ListLowerAlpha	小写拉丁字母
+					*/
+					auto tlf = QTextListFormat::ListSquare;
+
+					// 插入列表，并把光标右边的字符置为列表第一项
+					tc.insertList(QTextListFormat::ListCircle);
+
+					// 在当前位置插入一个新块，并使其成为具有给定格式的新创建列表的第一个列表项，返回创建的列表
+					tc.insertList(tlf);
+
+					// 创建列表，并把光标所在行（段落）的字符置为列表第一项
+					tc.createList(QTextListFormat::ListCircle);
+					tc.createList(tlf);
+				}
+			}
+		}
+	}
+
+	{
+		// QDateTimeEdit
+		// QDateEdit
+		// QTimeEdit
+		/*
+		 * 使用QDateEdit时，如果不设置日期，则系统会为其指定一个默认的日期：2000年1月1日。
+		 * 使用QTimeEdit时，如果不设置时间，则系统会为其指定一个默认的时间：0时0分0秒。
+		 * 所以，我们一般都会指定一个合适的日期和时间（当前日期时间）。
+		 * QDateEdit *dateEdit = new QDateEdit(QDate::currentDate(), this);
+		 * QTimeEdit *timeEdit = new QTimeEdit(QTime::currentTime(), this);
+		 */
+		 /*
+		  * QDateEdit用于编辑日期，而QTimeEdit用于编辑时间。如果要同时操作日期时间，请使用QDateTimeEdit。
+		  */
+		if (false)
+		{
+			QDateTimeEdit* dateTimeEdit = new QDateTimeEdit(this);
+			dateTimeEdit->resize(200, 30);
+			dateTimeEdit->move(20, 330);
+
+			QDateTimeEdit* dateTimeEdit2 = new QDateTimeEdit(QDateTime::currentDateTime(), this);
+			dateTimeEdit2->resize(200, 30);
+			dateTimeEdit2->move(20, 380);
+
+			QDateTimeEdit* dateEdit = new QDateTimeEdit(QDate::currentDate(), this);
+			dateEdit->resize(150, 30);
+			dateEdit->move(20, 430);
+
+			QDateTimeEdit* timeEdit = new QDateTimeEdit(QTime::currentTime(), this);
+			timeEdit->resize(150, 30);
+			timeEdit->move(20, 480);
+
+			// 设置日期时间格式
+			dateTimeEdit->setDisplayFormat("yyyy-MM-dd HH:mm:ss");
+			dateTimeEdit2->setDisplayFormat("yyyy/MM/dd HH-mm-ss");
+			dateEdit->setDisplayFormat("yyyy.M.d");
+			timeEdit->setDisplayFormat("H:mm");
+
+			// 日期时间范围
+			/*
+			 * setDateTimeRange()
+			 * setDateRange()
+			 * setTimeRange()
+			 * setMaximumDateTime()
+			 * setMinimumDateTime()
+			 * setMinimumTime()
+			 * setMaximumTime()
+			 */
+			dateEdit->setMinimumDate(QDate::currentDate().addDays(-365));  // -365天
+			dateEdit->setMaximumDate(QDate::currentDate().addDays(365));  // +365天
+
+			// 默认情况下只能通过鼠标点击上下箭头来改变日期时间，如果要弹出日期控件，只需调用setCalendarPopup(true)即可
+			dateEdit->setCalendarPopup(true);
+
+			// 获取日期时间
+			QDate date = dateEdit->date();  // 日期
+			QDateTime dateTime = dateEdit->dateTime();  // 日期时间
+			QDate maxDate = dateEdit->maximumDate();  // 最大日期
+			QDateTime maxDateTime = dateEdit->maximumDateTime();  // 最大日期时间
+			QTime maxTime = dateEdit->maximumTime();  // 最大时间
+			QDate minDate = dateEdit->minimumDate();  // 最小日期
+			QDateTime minDateTime = dateEdit->minimumDateTime();  // 最小日期时间
+			QTime minTime = dateEdit->minimumTime();  // 最小时间
+
+
+			int nCount = dateEdit->sectionCount();  // 部分数量
+			QDateTimeEdit::Section monthSection = dateEdit->sectionAt(1);  // 下标为1对应的部分
+			QDateTimeEdit::Section section = dateEdit->currentSection(); // 当前部分
+			int nIndex = dateEdit->currentSectionIndex();  // 当前部分下标
+														   // 各部分对应的值
+			QString strYear = dateEdit->sectionText(QDateTimeEdit::YearSection);
+			QString strMonth = dateEdit->sectionText(QDateTimeEdit::MonthSection);
+			QString strDay = dateEdit->sectionText(QDateTimeEdit::DaySection);
+			QString strHour = dateEdit->sectionText(QDateTimeEdit::HourSection);
+			QString strMinute = dateEdit->sectionText(QDateTimeEdit::MinuteSection);
+			QString strSecond = dateEdit->sectionText(QDateTimeEdit::SecondSection);
+		}
+	}
+
+	{
+		// QTabWidget
+		if (false)
+		{
+			QWidget* pGroup1 = new QWidget;
+
+			QToolButton* pBtn1 = new QToolButton;
+			pBtn1->setText("apple");
+			pBtn1->setToolButtonStyle(Qt::ToolButtonStyle::ToolButtonTextBesideIcon);
+			pBtn1->setAutoRaise(true);
+			pBtn1->setArrowType(Qt::ArrowType::DownArrow);
+
+			QToolButton* pBtn2 = new QToolButton;
+			pBtn2->setText("babala");
+			pBtn2->setToolButtonStyle(Qt::ToolButtonStyle::ToolButtonTextBesideIcon);
+			pBtn2->setAutoRaise(true);
+
+			QVBoxLayout* pLayout1 = new QVBoxLayout(pGroup1);
+			pLayout1->setMargin(10);
+			pLayout1->setAlignment(Qt::AlignmentFlag::AlignLeft);
+			pLayout1->addWidget(pBtn1);
+			pLayout1->addWidget(pBtn2);
+
+			//////////////////////////////////////
+			QWidget* pGroup2 = new QWidget;
+			QToolButton* pBtn3 = new QToolButton;
+			pBtn3->setText("HUAWEI");
+			pBtn3->setToolButtonStyle(Qt::ToolButtonStyle::ToolButtonTextBesideIcon);
+			pBtn3->setAutoRaise(true);
+
+			QToolButton* pBtn4 = new QToolButton;
+			pBtn4->setText("XIAOMI");
+			pBtn4->setToolButtonStyle(Qt::ToolButtonStyle::ToolButtonTextBesideIcon);
+			pBtn4->setAutoRaise(true);
+
+			QVBoxLayout* pLayout2 = new QVBoxLayout(pGroup2);
+			pLayout2->setMargin(10);
+			pLayout2->setAlignment(Qt::AlignmentFlag::AlignLeft);
+			pLayout2->addWidget(pBtn3);
+			pLayout2->addWidget(pBtn4);
+
+			QTabWidget* pTab = new QTabWidget(this);
+			pTab->addTab(pGroup1, "fruit");
+			pTab->addTab(pGroup2, "telephone");
+			pTab->resize(200, 200);
+			pTab->move(20, 330);
+		}
+	}
+
+	{
+		// QGroupBox
+		if (false)
+		{
+			QGroupBox* pGroupBox = new QGroupBox(QObject::tr("GroupBox test"), this);
+			QPushButton* pBtn = new QPushButton(QObject::tr("button"));
+			QCheckBox* pCheckBox = new QCheckBox(QObject::tr("checkbox test"));
+			QRadioButton* pRadio = new QRadioButton(QObject::tr("radiobtn test"));
+			QVBoxLayout* layout = new QVBoxLayout;
+			layout->addWidget(pBtn);
+			layout->addWidget(pCheckBox);
+			layout->addWidget(pRadio);
+
+			pGroupBox->setLayout(layout);
+			// GroupBox里面控件是否可选择是能
+			pGroupBox->setCheckable(true);
+			pGroupBox->move(20, 330);
+			pGroupBox->resize(200, 200);
+		}
+	}
+
+	{
+		// QScrollArea
+		if (false)
+		{
+			QGroupBox* pGroupBox = new QGroupBox(QObject::tr("GroupBox test"), this);
+			QPushButton* pBtn = new QPushButton(QObject::tr("button"));
+			QCheckBox* pCheckBox = new QCheckBox(QObject::tr("checkbox test"));
+			QRadioButton* pRadio = new QRadioButton(QObject::tr("radiobtn test"));
+
+			QScrollArea* pSCrollArea = new QScrollArea(this);
+
+			QVBoxLayout* layout = new QVBoxLayout;
+			layout->addWidget(pBtn);
+			layout->addWidget(pCheckBox);
+			layout->addWidget(pRadio);
+			pGroupBox->setLayout(layout);
+			pGroupBox->setCheckable(true);
+
+			pSCrollArea->move(20, 330);
+			pSCrollArea->resize(200, 200);
+			pSCrollArea->setWidgetResizable(true);
+			pSCrollArea->setBackgroundRole(QPalette::Dark);
+			pSCrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+			pSCrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+			pSCrollArea->setWidget(pGroupBox);
+		}
+	}
+
+	{
+		// QProgressBar
+		if (false)
+		{
+			QProgressBar* pProgressBar = new QProgressBar(this);
+			pProgressBar->move(20, 330);
+			pProgressBar->setOrientation(Qt::Horizontal);  // 水平方向
+			pProgressBar->setMinimum(0);  // 最小值
+			pProgressBar->setMaximum(100);  // 最大值
+			pProgressBar->setValue(50);  // 当前进度
+
+			QProgressBar* pProgressBar2 = new QProgressBar(this);
+			pProgressBar2->move(20, 380);
+			pProgressBar2->setOrientation(Qt::Horizontal);  // 水平方向
+			pProgressBar2->setMinimum(0);  // 最小值
+			pProgressBar2->setMaximum(100);  // 最大值
+			pProgressBar2->setValue(50);  // 当前进度
+			pProgressBar2->setInvertedAppearance(true);  // 反方向
+		}
+	}
+
+	{
+		// Qlabel
+		if (false)
+		{
+			QLabel* lbl = new QLabel(this);
+			lbl->resize(150, 30);
+			QFont lbl_font;
+			lbl_font.setPointSize(11);      //设置字体大小
+			lbl->move(20, 330);
+			lbl->setFont(lbl_font);
+			lbl->setText("Hello World.");
+			lbl->setFrameStyle(QFrame::Panel | QFrame::Sunken); //设置外观
+		}
+	}
+
+	{
+		// QCalendarWidget
+		if (false)
+		{
+			QCalendarWidget* calendar = new QCalendarWidget(this);
+			calendar->move(300, 100);
+			// 垂直标题可以显示的各种格式
+			/*
+			 * QCalendarWidget::NoVerticalHeader	标题被隐藏
+			 * QCalendarWidget::ISOWeekNumbers		标题显示QDate::weekNumber()所描述的ISO星期编号
+			 */
+			calendar->setVerticalHeaderFormat(QCalendarWidget::NoVerticalHeader);
+
+			// 保存水平头的显示格式
+			/*
+			 * QCalendarWidget::NoHorizontalHeader		标题被隐藏
+			 * QCalendarWidget::SingleLetterDayNames	标题显示日期名称的单个字母缩写（例如，星期一为M）
+			 * QCalendarWidget::ShortDayNames			标题显示日期名称缩写（例如星期一为周一）
+			 * QCalendarWidget::LongDayNames			标题显示完整的日期名称（例如星期一）
+			 */
+			calendar->setHorizontalHeaderFormat(QCalendarWidget::SingleLetterDayNames);
+			calendar->setFont(QFont("微软雅黑", 15));
+			calendar->adjustSize();
+
+			// 设置可选择最小日期
+			calendar->setMinimumDate(QDate(2019, 1, 1));
+
+			// 设置可选择最大日期
+			calendar->setMaximumDate(QDate(2020, 1, 31));
+
+			// 是否显示导航栏
+			calendar->setNavigationBarVisible(true);
+
+			// 是否显示表格
+			calendar->setGridVisible(false);
+
+			calendar->setDateEditEnabled(false);
+		}
+	}
+
+	{
+		// QLCDNumber
+		if (false)
+		{
+			QLCDNumber* pLCD = new QLCDNumber(this);
+			pLCD->move(300, 100);
+			pLCD->resize(300, 100);
+
+			// 设置能显示的位数
+			pLCD->setDigitCount(25);
+
+			// 设置显示的模式为十进制
+			pLCD->setMode(QLCDNumber::Dec);
+
+			// 设置显示外观
+			pLCD->setSegmentStyle(QLCDNumber::Flat);
+
+			// 决定了小数点单独站一位空间还是在两个位之间
+			// 如果参数为true，小数点将占用比平常更少的空间
+			pLCD->setSmallDecimalPoint(false);
+
+			// 设置样式
+			pLCD->setStyleSheet("border: 2px solid green; color: green; background: silver;");
+
+			QTimer* pTimer = new QTimer(this);
+
+			// 设置定时间隔
+			pTimer->setInterval(1000);
+			connect(pTimer, &QTimer::timeout, this, [pLCD]()
+				{
+					// 获取系统当前时间
+					QDateTime dateTime = QDateTime::currentDateTime();
+					// 显示的内容
+					pLCD->display(dateTime.toString("yyyy-MM-dd HH:mm:ss.zzz"));
+				});
+
+			// 启动定时器
+			pTimer->start();
 		}
 	}
 }
