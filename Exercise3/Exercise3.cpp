@@ -80,14 +80,39 @@ Exercise3::Exercise3(QWidget* parent)
 			searchHighLight->searchText(lineEdit->text());
 		});
 
+	// QWidget 偶数行
+	QWidget* pGroup1 = new QWidget;
+	// QVBoxLayout
+	QVBoxLayout* layout1 = new QVBoxLayout(pGroup1);
+	for (size_t i = 1; i < (*strList).size(); i += 2)
+	{
+		layout1->addWidget(new QLineEdit((*strList)[i]));
+	}
+
+	// QWidget 奇数行
+	QWidget* pGroup2 = new QWidget;
+	// QVBoxLayout
+	QVBoxLayout* layout2 = new QVBoxLayout(pGroup2);
+	for (size_t i = 0; i < (*strList).size(); i += 2)
+	{
+		layout2->addWidget(new QLineEdit((*strList)[i]));
+	}
+
+	// QTabWidget
+	QTabWidget* tab = new QTabWidget(this);
+	tab->addTab(pGroup1, "偶数行");
+	tab->addTab(pGroup2, "奇数行");
+	tab->move(420, 20);
+	tab->resize(200, 300);
+
 	// QLineEdit
 	QLineEdit* lineEdit2 = new QLineEdit(this);
-	lineEdit2->move(5, 250);
+	lineEdit2->move(5, 200);
 
 	// QPushButton
 	QPushButton* addBtn = new QPushButton("添加", this);
-	addBtn->move(5, 290);
-	connect(addBtn, &QPushButton::clicked, this, [strList, model, textEdit, lineEdit2]()
+	addBtn->move(5, 250);
+	connect(addBtn, &QPushButton::clicked, this, [strList, model, textEdit, lineEdit2, layout1, layout2]()
 		{
 			if (!lineEdit2->text().isEmpty())
 			{
@@ -96,32 +121,15 @@ Exercise3::Exercise3(QWidget* parent)
 
 				model->appendRow(new QStandardItem(text.mid(0, 1)));
 				textEdit->append(text);
+
+				if (((*strList).size() & 1) == 0)
+				{
+					layout1->addWidget(new QLineEdit(text));
+				}
+				else
+				{
+					layout2->addWidget(new QLineEdit(text));
+				}
 			}
 		});
-
-	QWidget* pGroup1 = new QWidget;
-	{
-		// 偶数行
-		QVBoxLayout* layout = new QVBoxLayout(pGroup1);
-		for (size_t i = 0; i < (*strList).size(); i += 2)
-		{
-			layout->addWidget(new QLineEdit((*strList)[i]));
-		}
-	}
-
-	QWidget* pGroup2 = new QWidget;
-	{
-		// 奇数行
-		QVBoxLayout* layout = new QVBoxLayout(pGroup2);
-		for (size_t i = 1; i < (*strList).size(); i += 2)
-		{
-			layout->addWidget(new QLineEdit((*strList)[i]));
-		}
-	}
-
-	QTabWidget* tab = new QTabWidget(this);
-	tab->addTab(pGroup1, "偶数行");
-	tab->addTab(pGroup2, "奇数行");
-	tab->move(420, 20);
-	tab->resize(200, 150);
 }
