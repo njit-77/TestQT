@@ -72,30 +72,85 @@ Exercise6::Exercise6(QWidget* parent)
 			if (selIndex.row() != -1)
 			{
 				QStandardItem* currentItem = model->itemFromIndex(selIndex);
+				auto aa = currentItem->parent();
 				if (currentItem->parent())
 				{
-					// 选择二级节点
+					// 二级节点
 					QStandardItem* parent = currentItem->parent();
 
-					// 通过二级节点查找对应一级节点QModelIndex
+					// 查找二级节点所对应的一级节点 
 					selIndex = model->indexFromItem(parent);
-					model->removeRow(selIndex.row());
 				}
-				else
+				model->removeRow(selIndex.row());
+
+				// 重新刷新一级节点
+				for (int i = 0, Count = model->rowCount(); i < Count; i++)
 				{
-					// 选择一级节点
-					model->removeRow(selIndex.row());
+					QStandardItem* item = model->invisibleRootItem()->child(i, 0);
+					item->setText(QString::number(i + 1));
 				}
 			}
 		});
 
-	connect(ui.addButton, &QPushButton::clicked, this, []()
+	connect(ui.addButton, &QPushButton::clicked, this, [&]()
 		{
+			QStandardItemModel* model = static_cast<QStandardItemModel*>(ui.treeView->model());
+			QModelIndex selIndex = ui.treeView->currentIndex();
+			if (selIndex.row() != -1)
+			{
+				QStandardItem* currentItem = model->itemFromIndex(selIndex);
+				auto aa = currentItem->parent();
+				if (currentItem->parent())
+				{
+					// 二级节点
+					QStandardItem* parent = currentItem->parent();
 
+					// 查找二级节点所对应的一级节点 
+					selIndex = model->indexFromItem(parent);
+				}
+				QStandardItem* data = new QStandardItem(QString::number(7));
+				data->appendRow(new QStandardItem(QString(ui.lineEdit2->text())));
+
+				model->insertRow(selIndex.row() + 1, data);
+
+				// 重新刷新一级节点
+				for (int i = 0, Count = model->rowCount(); i < Count; i++)
+				{
+					QStandardItem* item = model->invisibleRootItem()->child(i, 0);
+					item->setText(QString::number(i + 1));
+				}
+			}
+			else
+			{
+				QStandardItem* data = new QStandardItem(QString::number(model->rowCount() + 1));
+				data->appendRow(new QStandardItem(QString(ui.lineEdit2->text())));
+
+				model->appendRow(data);
+			}
 		});
 
-	connect(ui.saveAsButton, &QPushButton::clicked, this, []()
+	connect(ui.saveAsButton, &QPushButton::clicked, this, [&]()
 		{
+			if (ui.lineEdit->text().isEmpty())
+			{
+				QMessageBox::warning(this, "警告", "未打开文件");
+			}
+			else
+			{
+				QString path = QFileDialog::getSaveFileName(this, "保存文件", "H:\\qt\\Qt5.5应用视频教程\\01-QT2017", "Text files (*.txt)");
+				if (path.isEmpty())
+				{
+					QMessageBox::warning(this, "警告", "保存失败");
+				}
+				QFile file(path);
+				file.open(QFileDevice::WriteOnly);
 
+				QStandardItemModel* model = static_cast<QStandardItemModel*>(ui.treeView->model());
+				for (int i = 0, Count = model->rowCount(); i < Count; i++)
+				{
+					QStandardItem* item = model->invisibleRootItem()->child(i, 0)->child(0, 0);
+					file.write(item->text().toUtf8());
+				}
+			}
 		});
 }
